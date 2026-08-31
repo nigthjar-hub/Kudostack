@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enum support in Prisma; these are enforced at the
+// application layer (see src/constants.ts) and stored as plain strings.
+// FicStatus: "ONGOING" | "COMPLETE"
+// TagCategory: "TROPE" | "WARNING" | "SPICE" | "OTHER"
+// ReadType: "FIRST_READ" | "REREAD"
+// ReadStatus: "READING" | "FINISHED" | "WANT_TO_READ" | "DNF"
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String?  @unique
+  passwordHash String
+  bio          String?
+  avatarColor  String   @default("#faa55a")
+  createdAt    DateTime @default(now())
+
+  readEvents   ReadEvent[]
+  following    Follow[]         @relation("FollowerFollows")
+  followers    Follow[]         @relation("FollowingFollowers")
+  sentRecs     Recommendation[] @relation("RecSender")
+  receivedRecs Recommendation[] @relation("RecRecipient")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("FollowerFollows", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("FollowingFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followingId])
+}
+
+model Fic {
+  id            String   @id @default(cuid())
+  title         String
+  fandom        String
+  author        String
+  status        String   @default("ONGOING")
+  totalChapters Int?
+  wordCount     Int?
+  ao3Url        String?
+  createdAt     DateTime @default(now())
+
+  tags            FicTag[]
+  readEvents      ReadEvent[]
+  recommendations Recommendation[]
+
+  @@index([title])
+  @@index([fandom])
+}
+
+model Tag {
+  id       String @id @default(cuid())
+  name     String
+  category String
+
+  fics FicTag[]
+
+  @@unique([name, category])
+}
+
+model FicTag {
+  ficId String
+  tagId String
+
+  fic Fic @relation(fields: [ficId], references: [id], onDelete: Cascade)
+  tag Tag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([ficId, tagId])
+}
+
+model ReadEvent {
+  id           String    @id @default(cuid())
+  userId       String
+  ficId        String
+  type         String    @default("FIRST_READ")
+  status       String    @default("WANT_TO_READ")
+  rating       Float?
+  reviewText   String?
+  chaptersRead Int?
+  startedDate  DateTime?
+  finishedDate DateTime?
+
+  showContentWarnings Boolean @default(false)
+  showSpiceTags       Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fic  Fic  @relation(fields: [ficId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([ficId])
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  senderId    String
+  recipientId String
+  ficId       String
+  note        String?
+  createdAt   DateTime @default(now())
+
+  sender    User @relation("RecSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("RecRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  fic       Fic  @relation(fields: [ficId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId])
+  @@index([senderId])
+}

@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Fredoka", ui-rounded, "system-ui", sans-serif;
+  --font-body: "Inter", "system-ui", sans-serif;
+
+  --color-honeydew: #eafff5;
+  --color-sandy: #faa55a;
+  --color-paprika: #c95d36;
+  --color-royal: #626cda;
+  --color-lime: #fbff96;
+
+  --color-ink: #2b2620;
+  --color-ink-soft: #5c574f;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+  }
+
+  body {
+    background-color: var(--color-honeydew);
+    color: var(--color-ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+  }
+}
+
+@layer utilities {
+  .kudo-card {
+    background: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 2px 12px rgba(201, 93, 54, 0.08);
+  }
+}
