@@ -1,19 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: "Fredoka", ui-rounded, "system-ui", sans-serif;
+  --font-heading: "Fraunces", "Georgia", serif;
   --font-body: "Inter", "system-ui", sans-serif;
 
-  --color-honeydew: #eafff5;
+  --color-paper: #f7efe0;
+  --color-paper-dim: #ece0c9;
+  --color-surface: #fffaf1;
+
   --color-sandy: #faa55a;
-  --color-paprika: #c95d36;
+  --color-paprika: #c9502f;
   --color-royal: #626cda;
   --color-lime: #fbff96;
 
-  --color-ink: #3d2b1f;
-  --color-ink-soft: #5c574f;
-  --color-ink-muted: #8a7266;
-  --color-ink-dim: #b3a196;
+  --color-ink: #2b2118;
+  --color-ink-soft: #5c4f43;
+  --color-ink-muted: #8a7767;
+  --color-ink-dim: #bcab97;
 }
 
 @layer base {
@@ -22,7 +25,7 @@
   }
 
   body {
-    background-color: var(--color-honeydew);
+    background-color: var(--color-paper);
     color: var(--color-ink);
   }
 
@@ -33,8 +36,15 @@
 
 @layer utilities {
   .kudo-card {
-    background: white;
+    background: var(--color-surface);
+    border: 1px solid rgba(43, 33, 24, 0.08);
     border-radius: 1.25rem;
-    box-shadow: 0 2px 12px rgba(201, 93, 54, 0.08);
+    box-shadow: 0 2px 14px rgba(43, 33, 24, 0.06);
+  }
+
+  .kudo-segmented {
+    background: var(--color-surface);
+    border: 1.5px solid var(--color-paprika);
+    border-radius: 999px;
   }
 }

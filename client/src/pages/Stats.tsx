@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { api, type UserStats } from "../api";
+import { Laurel } from "../components/Laurel";
 
 export function Stats() {
   const { user } = useAuth();
@@ -18,8 +19,8 @@ export function Stats() {
   return (
     <div>
       <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-sandy to-paprika p-6 text-white shadow-lg">
-        <p className="font-heading text-sm uppercase tracking-widest opacity-80">Kudostack</p>
-        <h2 className="mt-1 font-heading text-3xl font-bold">{user.username}'s reading recap</h2>
+        <p className="text-sm font-semibold uppercase tracking-widest opacity-80">Kudostack</p>
+        <h2 className="mt-1 font-heading text-3xl font-semibold leading-tight">{user.username}'s reading recap</h2>
 
         <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
           <RecapTile value={stats.ficsFinished} label="Fics finished" />
@@ -49,6 +50,17 @@ export function Stats() {
           </div>
         )}
       </div>
+
+      {stats.readingStreak > 0 && (
+        <div className="kudo-card mt-4 flex items-center justify-center gap-3 p-6">
+          <Laurel className="text-paprika/70" />
+          <div className="text-center">
+            <p className="font-heading text-3xl font-semibold text-paprika">{stats.readingStreak} day</p>
+            <p className="text-sm text-ink-muted">Reading streak</p>
+          </div>
+          <Laurel flip className="text-paprika/70" />
+        </div>
+      )}
 
       {stats.ficsFinished > 0 && (
         <>

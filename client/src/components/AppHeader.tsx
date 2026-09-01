@@ -33,7 +33,7 @@ export function AppHeader() {
       className="mx-auto max-w-[440px] px-5 pb-4"
       style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 20px)" }}
     >
-      <h1 className="font-heading text-2xl font-bold text-paprika">{title}</h1>
+      <h1 className="font-heading text-[2rem] font-semibold leading-tight tracking-tight text-ink">{title}</h1>
       {subtitle && <p className="mt-1 text-sm text-ink-muted">{subtitle}</p>}
     </header>
   );

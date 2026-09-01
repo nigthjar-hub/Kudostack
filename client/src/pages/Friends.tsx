@@ -54,7 +54,7 @@ export function Friends() {
         <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft">
           Find friends by username
           <input
-            className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+            className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
             placeholder="Search usernames..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -63,7 +63,7 @@ export function Friends() {
         {results.length > 0 && (
           <ul className="mt-3 flex flex-col gap-2">
             {results.map((u) => (
-              <li key={u.id} className="flex items-center justify-between gap-3 rounded-xl bg-honeydew p-2.5">
+              <li key={u.id} className="flex items-center justify-between gap-3 rounded-xl bg-paper p-2.5">
                 <Link to={`/u/${u.username}`} className="flex items-center gap-2">
                   <div
                     className="flex h-8 w-8 items-center justify-center rounded-full font-heading text-xs font-semibold text-white"
@@ -76,7 +76,7 @@ export function Friends() {
                 <button
                   onClick={() => handleFollow(u.username)}
                   disabled={followedUsernames.has(u.username)}
-                  className="rounded-full bg-sandy px-3 py-1 text-xs font-semibold text-white disabled:opacity-50"
+                  className="rounded-full bg-paprika px-3 py-1 text-xs font-semibold text-white disabled:opacity-50"
                 >
                   {followedUsernames.has(u.username) ? "Following" : "Follow"}
                 </button>
@@ -86,7 +86,7 @@ export function Friends() {
         )}
       </div>
 
-      <h2 className="mt-6 mb-3 text-sm font-semibold text-ink">Activity</h2>
+      <h2 className="mt-6 mb-3 font-heading text-lg font-semibold text-ink">Activity</h2>
       {loading ? (
         <p className="text-ink-soft">Loading...</p>
       ) : feed.length === 0 ? (

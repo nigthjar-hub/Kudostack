@@ -70,8 +70,8 @@ export function Profile() {
         {!isSelf && (
           <button
             onClick={toggleFollow}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-              following ? "bg-white text-paprika border border-paprika/30" : "bg-sandy text-white"
+            className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${
+              following ? "border-paprika/30 bg-surface text-paprika" : "border-paprika bg-paprika text-white"
             }`}
           >
             {following ? "Following" : "Follow"}
@@ -89,7 +89,7 @@ export function Profile() {
 
       {stats && stats.topTags.length > 0 && (
         <div className="mt-4">
-          <h2 className="mb-2 text-sm font-semibold text-ink">Top tropes</h2>
+          <h2 className="mb-2 font-heading text-lg font-semibold text-ink">Top tropes</h2>
           <div className="flex flex-wrap gap-2">
             {stats.topTags.map((t) => (
               <span key={t.name} className="rounded-full bg-sandy/20 px-3 py-1 text-xs font-medium text-paprika">
@@ -100,7 +100,7 @@ export function Profile() {
         </div>
       )}
 
-      <h2 className="mt-6 mb-2 text-sm font-semibold text-ink">Recent ratings</h2>
+      <h2 className="mt-6 mb-2 font-heading text-lg font-semibold text-ink">Recent ratings</h2>
       {recent.length === 0 ? (
         <p className="text-ink-soft">No finished fics yet.</p>
       ) : (

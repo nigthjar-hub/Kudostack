@@ -111,7 +111,7 @@ export function AddFic() {
           <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft sm:col-span-2">
             Title
             <input
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -120,7 +120,7 @@ export function AddFic() {
           <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft">
             Fandom
             <input
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={fandom}
               onChange={(e) => setFandom(e.target.value)}
               required
@@ -129,7 +129,7 @@ export function AddFic() {
           <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft">
             Author
             <input
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               required
@@ -138,7 +138,7 @@ export function AddFic() {
           <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft">
             Fic status
             <select
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={ficStatus}
               onChange={(e) => setFicStatus(e.target.value as "ONGOING" | "COMPLETE")}
             >
@@ -151,7 +151,7 @@ export function AddFic() {
             <input
               type="number"
               min={1}
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={totalChapters}
               onChange={(e) => setTotalChapters(e.target.value)}
             />
@@ -161,7 +161,7 @@ export function AddFic() {
             <input
               type="number"
               min={1}
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={wordCount}
               onChange={(e) => setWordCount(e.target.value)}
             />
@@ -171,7 +171,7 @@ export function AddFic() {
             <input
               type="url"
               placeholder="https://archiveofourown.org/works/..."
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={ao3Url}
               onChange={(e) => setAo3Url(e.target.value)}
             />
@@ -179,7 +179,7 @@ export function AddFic() {
         </div>
 
         <div>
-          <h2 className="text-sm font-semibold text-ink">Tags</h2>
+          <h2 className="font-heading text-lg font-semibold text-ink">Tags</h2>
           <div className="mt-2 flex flex-col gap-3">
             {(["TROPE", "WARNING", "SPICE", "OTHER"] as const).map((category) =>
               tagsByCategory[category]?.length ? (
@@ -208,16 +208,18 @@ export function AddFic() {
           </div>
         </div>
 
-        <div className="border-t border-paprika/10 pt-5">
-          <h2 className="text-sm font-semibold text-ink">Your read status</h2>
+        <div className="border-t border-ink/10 pt-5">
+          <h2 className="font-heading text-lg font-semibold text-ink">Your read status</h2>
           <div className="mt-3 flex flex-wrap gap-2">
             {STATUS_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 type="button"
                 onClick={() => setReadStatus(opt.value)}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-                  readStatus === opt.value ? "bg-sandy text-white" : "bg-white text-ink-soft border border-paprika/15"
+                className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition ${
+                  readStatus === opt.value
+                    ? "border-paprika bg-paprika text-white"
+                    : "border-paprika/25 bg-surface text-ink-muted"
                 }`}
               >
                 {opt.label}
@@ -238,7 +240,7 @@ export function AddFic() {
               <input
                 type="number"
                 min={0}
-                className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+                className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
                 value={chaptersRead}
                 onChange={(e) => setChaptersRead(e.target.value)}
               />
@@ -249,7 +251,7 @@ export function AddFic() {
             Review (optional)
             <textarea
               rows={3}
-              className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+              className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
               value={reviewText}
               onChange={(e) => setReviewText(e.target.value)}
             />

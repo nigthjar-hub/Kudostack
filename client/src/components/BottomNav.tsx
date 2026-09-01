@@ -6,32 +6,34 @@ export function BottomNav() {
   const navigate = useNavigate();
 
   return (
-    <nav
-      className="fixed inset-x-0 bottom-0 z-20 mx-auto flex max-w-[440px] items-center justify-around border-t border-paprika/10 bg-white px-2 pt-2"
-      style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 10px)" }}
+    <div
+      className="fixed inset-x-0 bottom-0 z-20 mx-auto flex max-w-[440px] justify-center px-4"
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 14px)" }}
     >
-      <TabButton to={user ? `/u/${user.username}` : "/login"} label="Profile">
-        <ProfileIcon />
-      </TabButton>
-      <TabButton to="/friends" label="Friends">
-        <FriendsIcon />
-      </TabButton>
+      <nav className="flex w-full items-center justify-around rounded-[28px] border border-ink/[0.06] bg-surface px-2 py-2 shadow-[0_10px_30px_rgba(43,33,24,0.14)]">
+        <TabButton to={user ? `/u/${user.username}` : "/login"} label="Profile">
+          <ProfileIcon />
+        </TabButton>
+        <TabButton to="/friends" label="Friends">
+          <FriendsIcon />
+        </TabButton>
 
-      <button
-        onClick={() => navigate("/add")}
-        aria-label="Add Fic"
-        className="mb-5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-sandy text-white shadow-md shadow-paprika/20 active:scale-95"
-      >
-        <PlusIcon />
-      </button>
+        <button
+          onClick={() => navigate("/add")}
+          aria-label="Add Fic"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-paprika text-white shadow-md shadow-paprika/30 active:scale-95"
+        >
+          <PlusIcon />
+        </button>
 
-      <TabButton to="/library" label="Library">
-        <LibraryIcon />
-      </TabButton>
-      <TabButton to="/stats" label="Stats">
-        <StatsIcon />
-      </TabButton>
-    </nav>
+        <TabButton to="/library" label="Library">
+          <LibraryIcon />
+        </TabButton>
+        <TabButton to="/stats" label="Stats">
+          <StatsIcon />
+        </TabButton>
+      </nav>
+    </div>
   );
 }
 

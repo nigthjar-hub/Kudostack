@@ -32,7 +32,7 @@ export function Register() {
         <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft">
           Username
           <input
-            className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+            className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             autoFocus
@@ -47,7 +47,7 @@ export function Register() {
           Password
           <input
             type="password"
-            className="rounded-xl border border-paprika/15 bg-white px-3 py-2 outline-none focus:border-sandy"
+            className="rounded-xl border border-paprika/15 bg-surface px-3 py-2 outline-none focus:border-sandy"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -58,7 +58,7 @@ export function Register() {
         <button
           type="submit"
           disabled={submitting}
-          className="rounded-full bg-sandy px-4 py-2.5 font-heading font-semibold text-white transition hover:brightness-105 disabled:opacity-60"
+          className="rounded-full bg-paprika px-4 py-2.5 font-heading font-semibold text-white transition hover:brightness-105 disabled:opacity-60"
         >
           {submitting ? "Creating account..." : "Create account"}
         </button>
