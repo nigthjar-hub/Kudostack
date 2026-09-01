@@ -22,11 +22,11 @@ export default function App() {
           <Route path="/friends" element={<Friends />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/u/:username" element={<Profile />} />
-          <Route path="/" element={<Navigate to="/library" replace />} />
+          <Route path="/" element={<Navigate to="/friends" replace />} />
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to="/library" replace />} />
+      <Route path="*" element={<Navigate to="/friends" replace />} />
     </Routes>
   );
 }

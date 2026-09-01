@@ -10,8 +10,10 @@
   --color-royal: #626cda;
   --color-lime: #fbff96;
 
-  --color-ink: #2b2620;
+  --color-ink: #3d2b1f;
   --color-ink-soft: #5c574f;
+  --color-ink-muted: #8a7266;
+  --color-ink-dim: #b3a196;
 }
 
 @layer base {

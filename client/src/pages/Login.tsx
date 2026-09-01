@@ -18,7 +18,7 @@ export function Login() {
     setSubmitting(true);
     try {
       await login(username, password);
-      navigate("/library");
+      navigate("/friends");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong");
     } finally {

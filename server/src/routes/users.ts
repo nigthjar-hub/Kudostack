@@ -88,6 +88,11 @@ router.get("/:username/stats", async (req, res) => {
     }
   }
 
+  const ratingBreakdown = [5, 4, 3, 2, 1].map((stars) => ({
+    stars,
+    count: ratedEvents.filter((e) => Math.round(e.rating as number) === stars).length,
+  }));
+
   res.json({
     ficsFinished: finished.length,
     avgRating,
@@ -95,6 +100,7 @@ router.get("/:username/stats", async (req, res) => {
     longestFic,
     topTags,
     readingStreak: streak,
+    ratingBreakdown,
   });
 });
 

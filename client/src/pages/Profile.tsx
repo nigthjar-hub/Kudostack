@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api, type PublicReadEvent, type PublicUser, type UserStats } from "../api";
 import { useAuth } from "../context/AuthContext";
 import { StarRating } from "../components/StarRating";
@@ -7,7 +7,8 @@ import { TagBadge } from "../components/TagBadge";
 
 export function Profile() {
   const { username } = useParams<{ username: string }>();
-  const { user: currentUser } = useAuth();
+  const { user: currentUser, logout } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<PublicUser | null>(null);
   const [stats, setStats] = useState<UserStats | null>(null);
   const [recent, setRecent] = useState<PublicReadEvent[]>([]);
@@ -50,7 +51,7 @@ export function Profile() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div>
       <div className="kudo-card flex items-center justify-between gap-4 p-6">
         <div className="flex items-center gap-4">
           <div
@@ -124,6 +125,18 @@ export function Profile() {
             </li>
           ))}
         </ul>
+      )}
+
+      {isSelf && (
+        <button
+          onClick={async () => {
+            await logout();
+            navigate("/login");
+          }}
+          className="mt-6 w-full rounded-full border border-paprika/20 py-2.5 text-sm font-semibold text-paprika"
+        >
+          Log out
+        </button>
       )}
     </div>
   );

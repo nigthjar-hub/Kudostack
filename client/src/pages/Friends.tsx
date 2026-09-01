@@ -49,11 +49,8 @@ export function Friends() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="font-heading text-3xl font-semibold text-paprika">Friends</h1>
-      <p className="mt-1 text-ink-soft">See what people you follow are reading and recommending.</p>
-
-      <div className="kudo-card mt-4 p-4">
+    <div>
+      <div className="kudo-card p-4">
         <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft">
           Find friends by username
           <input

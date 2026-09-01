@@ -18,7 +18,7 @@ export function Register() {
     setSubmitting(true);
     try {
       await register(username, password);
-      navigate("/library");
+      navigate("/friends");
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong");
     } finally {

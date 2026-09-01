@@ -72,6 +72,7 @@ export interface UserStats {
   longestFic: { title: string; wordCount: number } | null;
   topTags: { name: string; category: string; count: number }[];
   readingStreak: number;
+  ratingBreakdown: { stars: number; count: number }[];
 }
 
 export interface FeedItem {

@@ -105,11 +105,8 @@ export function AddFic() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="font-heading text-3xl font-semibold text-paprika">Log a fic</h1>
-      <p className="mt-1 text-ink-soft">Add the details, tag it up, and note where you're at.</p>
-
-      <form onSubmit={handleSubmit} className="kudo-card mt-6 flex flex-col gap-5 p-6">
+    <div>
+      <form onSubmit={handleSubmit} className="kudo-card flex flex-col gap-5 p-6">
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-1 text-sm font-medium text-ink-soft sm:col-span-2">
             Title

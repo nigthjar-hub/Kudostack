@@ -16,11 +16,8 @@ export function Stats() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="font-heading text-3xl font-semibold text-paprika">Your Stats</h1>
-      <p className="mt-1 text-ink-soft">A shareable snapshot of your reading year.</p>
-
-      <div className="mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-sandy to-paprika p-8 text-white shadow-lg">
+    <div>
+      <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-sandy to-paprika p-6 text-white shadow-lg">
         <p className="font-heading text-sm uppercase tracking-widest opacity-80">Kudostack</p>
         <h2 className="mt-1 font-heading text-3xl font-bold">{user.username}'s reading recap</h2>
 
@@ -52,6 +49,22 @@ export function Stats() {
           </div>
         )}
       </div>
+
+      {stats.ficsFinished > 0 && (
+        <>
+          <p className="mb-2 mt-6 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+            Rating breakdown
+          </p>
+          <div className="kudo-card divide-y divide-paprika/10">
+            {stats.ratingBreakdown.map((row) => (
+              <div key={row.stars} className="flex items-center justify-between px-4 py-2.5">
+                <span className="text-sm text-royal">{"★".repeat(row.stars)}{"☆".repeat(5 - row.stars)}</span>
+                <span className="text-sm text-ink-muted">{row.count} fics</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
