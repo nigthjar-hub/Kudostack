@@ -26,6 +26,19 @@ router.get("/", async (req, res) => {
   res.json(fics);
 });
 
+// Registered before "/:id" — otherwise the dynamic id route would swallow this path.
+router.get("/fandoms", async (req, res) => {
+  const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
+  const rows = await prisma.fic.findMany({
+    where: q ? { fandom: { contains: q } } : {},
+    select: { fandom: true },
+    distinct: ["fandom"],
+    take: 15,
+    orderBy: { fandom: "asc" },
+  });
+  res.json(rows.map((r) => r.fandom));
+});
+
 router.get("/:id", async (req, res) => {
   const fic = await prisma.fic.findUnique({
     where: { id: req.params.id },

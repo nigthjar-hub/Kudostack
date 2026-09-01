@@ -4,6 +4,14 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "change-me-in-production";
 export const COOKIE_NAME = "kudostack_token";
 
+const isProd = process.env.NODE_ENV === "production";
+export const COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: "lax" as const,
+  secure: isProd,
+  maxAge: 30 * 24 * 60 * 60 * 1000,
+};
+
 export interface AuthPayload {
   userId: string;
   username: string;

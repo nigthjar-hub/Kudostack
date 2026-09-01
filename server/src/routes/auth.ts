@@ -2,17 +2,33 @@ import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { prisma } from "../prisma";
-import { COOKIE_NAME, requireAuth, signToken } from "../auth";
+import { COOKIE_NAME, COOKIE_OPTIONS as cookieOptions, requireAuth, signToken } from "../auth";
 
 const router = Router();
 
-const isProd = process.env.NODE_ENV === "production";
-const cookieOptions = {
-  httpOnly: true,
-  sameSite: "lax" as const,
-  secure: isProd,
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-};
+function serializeCurrentUser(user: {
+  id: string;
+  username: string;
+  displayName: string | null;
+  bio: string | null;
+  avatarColor: string;
+  avatarUrl: string | null;
+  bannerUrl: string | null;
+  defaultShowContentWarnings: boolean;
+  defaultShowSpiceTags: boolean;
+}) {
+  return {
+    id: user.id,
+    username: user.username,
+    displayName: user.displayName,
+    bio: user.bio,
+    avatarColor: user.avatarColor,
+    avatarUrl: user.avatarUrl,
+    bannerUrl: user.bannerUrl,
+    defaultShowContentWarnings: user.defaultShowContentWarnings,
+    defaultShowSpiceTags: user.defaultShowSpiceTags,
+  };
+}
 
 const registerSchema = z.object({
   username: z
@@ -43,7 +59,7 @@ router.post("/register", async (req, res) => {
 
   const token = signToken({ userId: user.id, username: user.username });
   res.cookie(COOKIE_NAME, token, cookieOptions);
-  res.status(201).json({ id: user.id, username: user.username, bio: user.bio, avatarColor: user.avatarColor });
+  res.status(201).json(serializeCurrentUser(user));
 });
 
 const loginSchema = z.object({
@@ -69,7 +85,7 @@ router.post("/login", async (req, res) => {
 
   const token = signToken({ userId: user.id, username: user.username });
   res.cookie(COOKIE_NAME, token, cookieOptions);
-  res.json({ id: user.id, username: user.username, bio: user.bio, avatarColor: user.avatarColor });
+  res.json(serializeCurrentUser(user));
 });
 
 router.post("/logout", (_req, res) => {
@@ -80,7 +96,48 @@ router.post("/logout", (_req, res) => {
 router.get("/me", requireAuth, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { id: req.user!.userId } });
   if (!user) return res.status(404).json({ error: "User not found" });
-  res.json({ id: user.id, username: user.username, bio: user.bio, avatarColor: user.avatarColor });
+  res.json(serializeCurrentUser(user));
+});
+
+const passwordSchema = z.object({
+  currentPassword: z.string(),
+  newPassword: z.string().min(8),
+});
+
+router.patch("/password", requireAuth, async (req, res) => {
+  const parsed = passwordSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Invalid input" });
+  }
+  const user = await prisma.user.findUnique({ where: { id: req.user!.userId } });
+  if (!user) return res.status(404).json({ error: "User not found" });
+
+  const valid = await bcrypt.compare(parsed.data.currentPassword, user.passwordHash);
+  if (!valid) return res.status(401).json({ error: "Current password is incorrect" });
+
+  const passwordHash = await bcrypt.hash(parsed.data.newPassword, 10);
+  await prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
+  res.json({ ok: true });
+});
+
+const deleteSchema = z.object({
+  password: z.string(),
+});
+
+router.delete("/me", requireAuth, async (req, res) => {
+  const parsed = deleteSchema.safeParse(req.body);
+  if (!parsed.success) {
+    return res.status(400).json({ error: "Password confirmation required" });
+  }
+  const user = await prisma.user.findUnique({ where: { id: req.user!.userId } });
+  if (!user) return res.status(404).json({ error: "User not found" });
+
+  const valid = await bcrypt.compare(parsed.data.password, user.passwordHash);
+  if (!valid) return res.status(401).json({ error: "Password is incorrect" });
+
+  await prisma.user.delete({ where: { id: user.id } });
+  res.clearCookie(COOKIE_NAME, cookieOptions);
+  res.json({ ok: true });
 });
 
 export default router;

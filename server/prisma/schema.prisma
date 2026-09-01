@@ -19,15 +19,76 @@ model User {
   username     String   @unique
   email        String?  @unique
   passwordHash String
+  displayName  String?
   bio          String?
   avatarColor  String   @default("#faa55a")
+  avatarUrl    String?
+  bannerUrl    String?
   createdAt    DateTime @default(now())
 
-  readEvents   ReadEvent[]
-  following    Follow[]         @relation("FollowerFollows")
-  followers    Follow[]         @relation("FollowingFollowers")
-  sentRecs     Recommendation[] @relation("RecSender")
-  receivedRecs Recommendation[] @relation("RecRecipient")
+  defaultShowContentWarnings Boolean @default(false)
+  defaultShowSpiceTags       Boolean @default(false)
+
+  readEvents    ReadEvent[]
+  following     Follow[]         @relation("FollowerFollows")
+  followers     Follow[]         @relation("FollowingFollowers")
+  sentRecs      Recommendation[] @relation("RecSender")
+  receivedRecs  Recommendation[] @relation("RecRecipient")
+  socialLinks   SocialLink[]
+  pinnedFics    PinnedFic[]
+  pinnedFandoms PinnedFandom[]
+  publicPosts   PublicPost[]
+}
+
+model SocialLink {
+  id       String @id @default(cuid())
+  userId   String
+  platform String
+  url      String
+  order    Int    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PinnedFic {
+  id     String @id @default(cuid())
+  userId String
+  ficId  String
+  order  Int    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fic  Fic  @relation(fields: [ficId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, ficId])
+  @@index([userId])
+}
+
+model PinnedFandom {
+  id     String @id @default(cuid())
+  userId String
+  fandom String
+  order  Int    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fandom])
+  @@index([userId])
+}
+
+model PublicPost {
+  id        String   @id @default(cuid())
+  authorId  String
+  ficId     String
+  note      String
+  createdAt DateTime @default(now())
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  fic    Fic  @relation(fields: [ficId], references: [id], onDelete: Cascade)
+
+  @@index([authorId])
+  @@index([createdAt])
 }
 
 model Follow {
@@ -57,6 +118,8 @@ model Fic {
   tags            FicTag[]
   readEvents      ReadEvent[]
   recommendations Recommendation[]
+  pinnedBy        PinnedFic[]
+  publicPosts     PublicPost[]
 
   @@index([title])
   @@index([fandom])

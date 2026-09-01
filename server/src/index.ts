@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "path";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -10,6 +11,8 @@ import readEventRoutes from "./routes/readEvents";
 import userRoutes from "./routes/users";
 import feedRoutes from "./routes/feed";
 import recommendationRoutes from "./routes/recommendations";
+import uploadRoutes from "./routes/uploads";
+import publicPostRoutes from "./routes/publicPosts";
 
 const app = express();
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
@@ -19,6 +22,7 @@ app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(attachUser);
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
@@ -29,6 +33,8 @@ app.use("/api/read-events", readEventRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/feed", feedRoutes);
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/uploads", uploadRoutes);
+app.use("/api/public-posts", publicPostRoutes);
 
 app.use((err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error(err);

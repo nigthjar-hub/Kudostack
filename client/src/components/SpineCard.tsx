@@ -1,21 +1,6 @@
 import type { ReadEvent, ReadStatus } from "../api";
 import { StarRating } from "./StarRating";
-
-// Deterministic warm gradient per fic so the shelf reads as varied without needing cover art.
-const SPINES = [
-  ["#c9502f", "#a53d22"],
-  ["#faa55a", "#c9502f"],
-  ["#626cda", "#4a4fb0"],
-  ["#8a7767", "#5c4f43"],
-  ["#d97a4a", "#8a3f24"],
-  ["#7d84e0", "#626cda"],
-] as const;
-
-function spineFor(id: string) {
-  let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = (hash * 31 + id.charCodeAt(i)) >>> 0;
-  return SPINES[hash % SPINES.length];
-}
+import { spineFor } from "../lib/spineColor";
 
 const STATUS_LABEL: Record<ReadStatus, string> = {
   READING: "Reading",
